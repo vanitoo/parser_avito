@@ -1,2 +1,19 @@
-# created by virtualenv automatically
-*
+# Игнорировать файлы
+*.spec
+
+# Игнорировать файл .env с конфиденциальными данными
+.env
+
+
+# Игнорировать папки
+dist/
+build/
+.venv*/
+*out/
+
+
+# Исключаем всю папку .idea, кроме файлов, которые могут быть полезны для совместной работы команды
+.idea/*
+!.idea/codeStyles
+!.idea/runConfigurations
+!.idea/important_settings.xml

@@ -1,3 +1,4 @@
+import os
 import configparser
 import re
 import threading
@@ -13,6 +14,44 @@ from lang import *
 from parser_cls import AvitoParse
 
 
+def check_and_create_settings():
+    settings_file = 'settings.ini'
+    """Проверяет наличие файла settings.ini и создает его с дефолтными значениями, если его нет."""
+
+    # Проверяем, существует ли файл
+    if not os.path.exists(settings_file):
+        # Если нет, создаем и записываем в него стандартные значения
+        config = configparser.ConfigParser()
+
+        config['Avito'] = {
+            'url': 'https://www.avito.ru/sankt-peterburg/tovary_dlya_kompyutera?cd=1&q=%%D0%%B2%%D0%%B8%%D0%%B4%%D0%%B5%%D0%%BE%%D0%%BA%%D0%%B0%%D1%%80%%D1%%82%%D0%%B0+rtx',
+            'chat_id': '',
+            'tg_token': '',
+            'num_ads': '3',
+            'freq': '60',
+            'keys': '',
+            'keys_blacks': '',
+            'max_price': '200000000',
+            'min_price': '0',
+            'geo': '',
+            'proxy': '',
+            'proxy_change_ip': '',
+            'need_more_info': '1',
+            'debug_mode': '1',
+            'fast_speed': '0',
+            'max_view': '0',
+            'keys_black': ''
+        }
+
+        # Записываем данные в файл
+        with open(settings_file, 'w', encoding='utf-8') as configfile:
+            config.write(configfile)
+
+        print(f"{settings_file} не найден, был создан с дефолтными значениями.")
+    else:
+        print(f"{settings_file} найден. Используются текущие настройки.")
+
+
 def main(page: ft.Page):
     page.title = f'Parser Avito v {__VERSION__}'
     page.theme_mode = ft.ThemeMode.DARK
@@ -23,6 +62,8 @@ def main(page: ft.Page):
     page.window.min_height = 500
     page.padding = 20
     tg_logger_init = False
+
+    check_and_create_settings()
     config = configparser.ConfigParser()
     config.read("settings.ini", encoding='utf-8')
     is_run = False
@@ -276,10 +317,8 @@ def main(page: ft.Page):
     geo = ft.TextField(label="Ограничение по городу", width=400, on_change=required_field_for_more_info, expand=True,
                        tooltip=GEO_HELP)
     start_btn = ft.FilledButton("Старт", width=800, on_click=start_parser, expand=True)
-    stop_btn = ft.OutlinedButton("Стоп", width=980, on_click=stop_parser, visible=False,
-                                 style=ft.ButtonStyle(bgcolor=ft.colors.RED_400), expand=True)
-    console_widget = ft.Text(width=800, height=100, color=ft.colors.GREEN, value="", selectable=True,
-                             expand=True)  # , bgcolor=ft.colors.GREY_50)
+    stop_btn = ft.OutlinedButton("Стоп", width=980, on_click=stop_parser, visible=False, style=ft.ButtonStyle(color=ft.colors.RED_400), expand=True)
+    console_widget = ft.Text(width=800, height=100, color=ft.colors.GREEN, value="", selectable=True, expand=True)  # , bgcolor=ft.colors.GREY_50)
     need_more_info = ft.Checkbox("Дополнительная информация", on_change=required_field_for_more_info,
                                  tooltip=NEED_MORE_INFO_HELP)
     debug_mode = ft.Checkbox("Режим отладки", tooltip=DEBUG_MODE_HELP)
