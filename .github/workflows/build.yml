@@ -19,20 +19,13 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.11'
+        python-version: '3.11.6'
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pyinstaller
-
-    - name: Install MinGW for strip
-      run: |
-        choco install mingw -y
-        $env:PATH = "C:\ProgramData\chocolatey\bin;" + $env:PATH
-      shell: pwsh
-
 
     - name: Build .exe with PyInstaller
       run: |
@@ -43,7 +36,6 @@ jobs:
       with:
         name: AvitoParser.exe  # Название артефакта
         path: dist/AvitoParser.exe  # Путь к скомпилированному .exe файлу
-
 
     - name: Create GitHub Release
       id: create_release
