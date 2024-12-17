@@ -317,18 +317,18 @@ def main(page: ft.Page):
     geo = ft.TextField(label="Ограничение по городу", width=400, on_change=required_field_for_more_info, expand=True,
                        tooltip=GEO_HELP)
     start_btn = ft.FilledButton("Старт", width=800, on_click=start_parser, expand=True)
-    stop_btn = ft.OutlinedButton("Стоп", width=980, on_click=stop_parser, visible=False, style=ft.ButtonStyle(color=ft.colors.RED_400), expand=True)
-    console_widget = ft.Text(width=800, height=100, color=ft.colors.GREEN, value="", selectable=True, expand=True)  # , bgcolor=ft.colors.GREY_50)
+    stop_btn = ft.OutlinedButton("Стоп", width=980, on_click=stop_parser, visible=False, style=ft.ButtonStyle(color=ft.Colors.RED_400), expand=True)
+    console_widget = ft.Text(width=800, height=100, color=ft.Colors.GREEN, value="", selectable=True, expand=True)  # , bgcolor=ft.colors.GREY_50)
     need_more_info = ft.Checkbox("Дополнительная информация", on_change=required_field_for_more_info,
                                  tooltip=NEED_MORE_INFO_HELP)
     debug_mode = ft.Checkbox("Режим отладки", tooltip=DEBUG_MODE_HELP)
     fast_speed = ft.Checkbox("Ускорить", tooltip=SKIP_JS_HELP)
     buy_me_coffe_btn = ft.TextButton("Поддержать развитие парсера",
                                      on_click=lambda e: page.launch_url("https://yoomoney.ru/to/410014382689862"),
-                                     style=ft.ButtonStyle(color=ft.colors.GREEN_300), expand=True,
+                                     style=ft.ButtonStyle(color=ft.Colors.GREEN_300), expand=True,
                                      tooltip=BUY_ME_COFFE_BTN_HELP)
     report_issue_btn = ft.TextButton("Сообщить о проблеме", on_click=lambda e: page.launch_url(
-        "https://github.com/Duff89/parser_avito/issues"), style=ft.ButtonStyle(color=ft.colors.GREY), expand=True,
+        "https://github.com/Duff89/parser_avito/issues"), style=ft.ButtonStyle(color=ft.Colors.GREY), expand=True,
                                      tooltip=REPORT_ISSUE_BTN_HELP)
     input_fields = ft.Column(
         [
@@ -412,6 +412,10 @@ def main(page: ft.Page):
     logger_console_init()
 
 
-ft.app(
-    target=main,
-)
+try:
+    ft.app(
+        target=main,
+    )
+except Exception as e:
+    print(f"Ошибка: {e}")
+
